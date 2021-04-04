@@ -27,3 +27,60 @@ What is the largest prime factor of the number 600851475143 ?
 600851475143 sayısının en büyük asal bileşeni kaçtır?
 """
 
+# bulunan asal sayılar dizisi
+asallar = [2, 3]
+
+def asal_mi(sayi, asallar):
+    karekok = sayi ** (1/2)
+    # 5 * 5 = 25
+    # 5
+    # 2 3 5 <=
+    i = 0
+    while asallar[i] <= karekok:
+        if sayi % asallar[i] == 0:
+            return False
+        i += 1
+
+    return True
+
+def asal_bul(liste):
+    # son asal
+    a = liste[-1]
+    a+=2
+    while asal_mi(a, liste) == False:
+        a+=2
+    return a
+
+# asal iterator gibi birsey
+def asal_al(i, liste):
+
+    if i < len(asallar):
+        return asallar[i]
+
+    else:
+        fark = i-len(asallar)
+        for x in range(fark+1):
+            asal = asal_bul(liste)
+            asallar.append(asal)
+        return asal
+
+
+# en buyuk faktoru bul
+def bul(sayi):
+    i = 0
+    while True:
+        asal = asal_al(i, asallar)
+        # bu asal sayinin bir asal faktoru mu
+        # 2 2 3 5 5 5 7
+        if sayi % asal == 0:
+            sayi /= asal
+            if sayi == 1:
+                return asallar[i]
+            continue
+        i += 1
+
+
+sayi = 600851475143
+
+a = bul(sayi)
+print (a)
