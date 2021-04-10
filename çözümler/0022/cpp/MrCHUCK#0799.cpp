@@ -5,7 +5,7 @@
 using namespace std;
 int main() {
     ifstream f;
-    f.open(R"(C:\Users\ertug\Desktop\c++\euler\022\p022_names.txt)");
+    f.open("your path");
     string x,sum;
     while (f >> x) {
         sum +=x;
