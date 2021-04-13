@@ -1,4 +1,4 @@
-#mehmet_mert__
+#mehmet_mert__ 
 first_num = 999
 second_num = 999
 high_score = 0
