@@ -28,16 +28,16 @@ https://disboard.org/server/698972054740795453
 -}
 
 
-primes :: [Int]
+primes :: [Integer]
 primes = 
     let
-        limitPrimes :: Int -> [Int]
+        limitPrimes :: Integer -> [Integer]
         limitPrimes n = takeWhile (<=isqrtn) primes where
             isqrtn = floor . sqrt . fromIntegral $ n
 
-        ifPrime :: Int -> Bool
+        ifPrime :: Integer -> Bool
         ifPrime n = all (\a -> (n `mod` a) /= 0) (limitPrimes n)
     in
-        [2] ++ filter ifPrime [3, 5..]
+        2 : filter ifPrime [3, 5..]
 
 main = print $ primes !! (10001 - 1)
