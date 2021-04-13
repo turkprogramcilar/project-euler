@@ -1,0 +1,5 @@
+Bir palindromik sayı her iki şekilde de aynı şekilde okunur. 
+
+İki basamaklı iki sayının çarpımından yapılan en büyük palindrom 9009 = 91 × 99'dur.
+
+İki 3 basamaklı sayının çarpımından yapılmış en büyük palindromu bulun.
