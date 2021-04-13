@@ -2,4 +2,4 @@ Fibonacci dizisindeki her yeni terim, önceki iki terimin eklenmesiyle oluşturu
 
 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ...
 
-Fibonacci dizisindeki değerleri dört milyonu geçmeyen terimleri göz önünde bulundurarak, çift değerli terimlerin toplamını bulun.
+Fibonacci dizisindeki değerleri dört milyonu geçmeyen terimleri göz önünde bulundurarak, çift değerli terimlerin toplamını bulun. 
