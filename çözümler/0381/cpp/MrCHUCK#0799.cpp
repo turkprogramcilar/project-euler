@@ -1,5 +1,9 @@
 #include <iostream>
 #include <cstring>
+//https://en.wikipedia.org/wiki/Wilson%27s_theorem
+//https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+//https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+//1.5 sec
 using namespace std;
 
 int main()
@@ -13,6 +17,9 @@ int main()
         if(primes[i])
             for(long j = i * i; j < 100000001;j+=i)
                 primes[j] = false;
+
+//Asallari sieve ile cok hizli bulduk
+//Alt tarafi anlamak icin soruyu okumaniz ve wilson teoremine bir goz gezdirmeniz gerek
     long long total = 0;
     for(long i = 5; i < 100000001;i+=2)
     {
@@ -38,3 +45,4 @@ int main()
     cout << total << endl;
     return 0;
 }
+
