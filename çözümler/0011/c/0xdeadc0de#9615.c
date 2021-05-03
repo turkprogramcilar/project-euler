@@ -28,33 +28,57 @@ char s[] =
 "01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48";
 
 typedef enum {
-    horizonal, vertical, diagonal, rdiagonal
-} orientation;
+    HORIZONAL, VERTICAL, DIAGONAL, RDIAGONAL
+} orientation_t;
 typedef struct {
     int* a[M];
-    orientation o;
+    orientation_t o;
     int cache;
-} monitor;
+} monitor_t;
 
-int product(monitor m, size_t monitor_length) {
+int product(monitor_t m, size_t monitor_length) {
     int r = 1;
     for (int i = 0; i < monitor_length; i++)
         r *= *m.a[i];
     return r;
 }
 
-monitor* mon_horizonal(size_t w, size_t h, int l[h][w], size_t m) {
+monitor_t* horizonal(size_t w, size_t h, int l[h][w], size_t m) {
 
-    monitor *r = malloc(sizeof(monitor)*h*(w-m+1));
+    monitor_t *r = malloc(sizeof(monitor_t)*h*(w-m+1));
 
     for (int y = 0; y < h; y++)
     for (int x = 0; x < w-m+1; x++) {
-        r[y*(w-m+1)+x].o = horizonal;
+        r[y*(w-m+1)+x].o = HORIZONAL;
         for (int z = 0; z < m; z++) 
             r[y*(w-m+1)+x].a[z] = &l[y][x+z];
     }
 
     return r;
+}
+
+monitor_t* rdiagonal(size_t w, size_t h, int l[h][w], size_t m) {
+
+    monitor_t *r = malloc(sizeof(monitor_t)*(h-m+1)*(w-m+1));
+
+    for (int y = 0; y < h-m+1; y++)
+    for (int x = 0; x < w-m+1; x++) {
+        r[y*(w-m+1)+x].o = RDIAGONAL;
+        for (int z = 0; z < m; z++) 
+            r[y*(w-m+1)+x].a[z] = &l[y+z][x+m-z-1];
+    }
+
+    return r;
+}
+
+monitor_t search_max(monitor_t *m, size_t sz) {
+    monitor_t max = *m;
+    for (int i = 1; i < sz; i++) {
+        m->cache = product(*m, M);
+        if (max.cache < m->cache) max = *m;
+        m++;
+    }
+    return max;
 }
 
 int main() {
@@ -71,16 +95,8 @@ int main() {
         l[y][x] = atoi(t);
         t = strtok(NULL, d);
     }
-
-    monitor *max, *m = mon_horizonal(W, H, l, M);
-    max = m;
-    for (int i = 1; i < H*(W-M+1); i++) {
-        m->cache = product(*m, M);
-        if (max->cache < m->cache)
-            max = m;
-        m++;
-    }
+    monitor_t *m = rdiagonal(W, H, l, M), max = search_max(m, (H-M+1)*(W-M+1));
     for (int z = 0; z < M; z++)
-        printf("%#2i ", *(max->a[z]));
-    printf("| product=%i\n", max->cache);
+        printf("%#2i ", *(max.a[z]));
+    printf("| product=%i\n", max.cache);
 }
