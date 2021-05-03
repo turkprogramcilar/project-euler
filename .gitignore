@@ -16,3 +16,4 @@
 *.stackdump
 *.hi
 *.o
+a.out

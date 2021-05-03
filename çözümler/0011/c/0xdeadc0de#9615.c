@@ -1,9 +1,10 @@
 #include <stdio.h>  // printf
-#include <stdlib.h> // atoi
+#include <stdlib.h> // atoi, malloc
 #include <string.h> // strtok
 #include <assert.h> // assert
-#define w 20
-#define h 20
+#define W 20 // w:width
+#define H 20 // h:height
+#define M  4 // m:monitor length
 char s[] = 
 "08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08 "
 "49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00 "
@@ -26,15 +27,60 @@ char s[] =
 "20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54 "
 "01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48";
 
+typedef enum {
+    horizonal, vertical, diagonal, rdiagonal
+} orientation;
+typedef struct {
+    int* a[M];
+    orientation o;
+    int cache;
+} monitor;
+
+int product(monitor m, size_t monitor_length) {
+    int r = 1;
+    for (int i = 0; i < monitor_length; i++)
+        r *= *m.a[i];
+    return r;
+}
+
+monitor* mon_horizonal(size_t w, size_t h, int l[h][w], size_t m) {
+
+    monitor *r = malloc(sizeof(monitor)*h*(w-m+1));
+
+    for (int y = 0; y < h; y++)
+    for (int x = 0; x < w-m+1; x++) {
+        r[y*(w-m+1)+x].o = horizonal;
+        for (int z = 0; z < m; z++) 
+            r[y*(w-m+1)+x].a[z] = &l[y][x+z];
+    }
+
+    return r;
+}
+
 int main() {
-    int l[h][w];
+
+    // l:list d:delim t:token 
+    int l[H][W];
     const char *d = " ";
     char *t = strtok(s, d);
-    for (int x = 0; x < w; x++)
-    for (int y = 0; y < h; y++) {
+
+    // parse the input into two dimensional array
+    for (int y = 0; y < W; y++)
+    for (int x = 0; x < H; x++) {
         assert(t);
-        ;
-        printf("[%i][%i]: %02i, (%s)\n", y, x, l[y][x] = atoi(t), t);
+        l[y][x] = atoi(t);
         t = strtok(NULL, d);
     }
+
+    monitor *max, *m = mon_horizonal(W, H, l, M);
+    max = m;
+    for (int i = 1; i < H*(W-M+1); i++) {
+        m->cache = product(*m, M);
+        if (max->cache < m->cache)
+            max = m;
+        m++;
+    }
+    for (int z = 0; z < M; z++)
+        printf("%#2i ", *(max->a[z]));
+    printf("| product=%i\n", max->cache);
 }
